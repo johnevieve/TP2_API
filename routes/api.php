@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\MissileController;
+use App\Http\Controllers\PartieController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,3 +19,17 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::prefix('battleship-ia/parties')
+    ->controller(PartieController::class)
+    ->group(function() {
+        Route::post('/', 'store');
+        Route::delete('/{id}', 'destroy');
+    });
+
+Route::prefix('battleship-ia/parties/{id}/missiles')
+    ->controller(MissileController::class)
+    ->group(function() {
+        Route::post('/', 'store');
+        Route::put('/{coordonees}', 'update');
+    });
