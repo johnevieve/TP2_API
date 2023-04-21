@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\PartieCollection;
 use App\Http\Resources\PartieResource;
+use App\Models\Missile;
 use App\Models\Partie;
 use Illuminate\Http\Request;
 

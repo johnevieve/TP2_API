@@ -15,8 +15,6 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->string('nom_ia');
-            $table->json('bateaux_user')->nullable();
-            $table->json('bateaux_ia')->nullable();
             $table->timestamps();
         });
     }

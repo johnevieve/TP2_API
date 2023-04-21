@@ -22,6 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('battleship-ia/parties')
     ->controller(PartieController::class)
+    ->middleware(['auth:sanctum'])
     ->group(function() {
         Route::post('/', 'store');
         Route::delete('/{id}', 'destroy');
@@ -29,6 +30,7 @@ Route::prefix('battleship-ia/parties')
 
 Route::prefix('battleship-ia/parties/{id}/missiles')
     ->controller(MissileController::class)
+    ->middleware(['auth:sanctum'])
     ->group(function() {
         Route::post('/', 'store');
         Route::put('/{coordonees}', 'update');

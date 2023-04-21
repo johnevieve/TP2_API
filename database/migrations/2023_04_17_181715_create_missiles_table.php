@@ -18,6 +18,11 @@ return new class extends Migration
             $table->string('coordonnee');
             $table->integer('resultat');
             $table->timestamps();
+
+            $table->foreign('partie_id')
+                ->references('id')
+                ->on('parties')
+                ->onDelete('cascade');
         });
     }
 
