@@ -15,14 +15,19 @@ class PartieController extends Controller
     {
         $partie = Partie::create($request->validated());
         $partie->bateaux = null;
+
         return new PartieResource($partie);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy($id): PartieResource
     {
+        $partie = Partie::find($id);
+        $partie->bateaux = null;
         Partie::destroy($id);
+
+        return new PartieResource($partie);
     }
 }
