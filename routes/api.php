@@ -21,7 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::prefix('battleship-ia/parties')->group(function () {
+    Route::prefix('/battleship-ia/parties')->group(function () {
         Route::controller(PartieController::class)->group(function () {
             Route::post('/', 'store');
             Route::delete('/{id}', 'destroy');
@@ -39,7 +39,6 @@ Route::middleware('auth:sanctum')->group(function () {
 /*
 Route::prefix('battleship-ia/parties')
     ->controller(PartieController::class)
-    ->middleware(['auth:sanctum'])
     ->group(function () {
         Route::post('/', 'store');
         Route::delete('/{id}', 'destroy');
@@ -47,7 +46,6 @@ Route::prefix('battleship-ia/parties')
 
 Route::prefix('battleship-ia/parties/{id}/missiles')
     ->controller(MissileController::class)
-    ->middleware(['auth:sanctum'])
     ->group(function () {
         Route::post('/', 'store');
         Route::put('/{coordonees}', 'update');

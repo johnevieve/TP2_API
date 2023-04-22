@@ -10,7 +10,9 @@ class Missile extends Model
     use HasFactory;
 
     protected $fillable = [
+        'partie_id',
         'coordonnee',
         'resultat'
     ];
+
 }

@@ -14,12 +14,11 @@ return new class extends Migration
         Schema::create('missiles', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('partie_id');
-            $table->boolean('coup_joueur');
             $table->string('coordonnee');
-            $table->integer('resultat');
+            $table->integer('resultat')->nullable();
             $table->timestamps();
 
-            $table->foreign('partie_id')
+             $table->foreign('partie_id')
                 ->references('id')
                 ->on('parties')
                 ->onDelete('cascade');
