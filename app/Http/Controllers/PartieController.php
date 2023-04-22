@@ -14,6 +14,7 @@ class PartieController extends Controller
     public function store(StorePartieRequest $request): PartieResource
     {
         $partie = Partie::create($request->validated());
+        $partie->bateaux = null;
         return new PartieResource($partie);
     }
 
