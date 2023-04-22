@@ -2,21 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\PartieCollection;
+use App\Http\Requests\StorePartieRequest;
 use App\Http\Resources\PartieResource;
-use App\Models\Missile;
 use App\Models\Partie;
-use Illuminate\Http\Request;
 
 class PartieController extends Controller
 {
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) : PartieResource
+    public function store(StorePartieRequest $request): PartieResource
     {
-        // todo validation
-        $partie = Partie::create();
+        $partie = Partie::create($request->validated());
         return new PartieResource($partie);
     }
 
