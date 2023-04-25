@@ -7,16 +7,94 @@ use App\Models\Missile;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+use function PHPUnit\Framework\isEmpty;
+
 class MissileController extends Controller
 {
+    private function randomCoordonnee($id) : string
+    {
+        $recherche = true;
+
+        do {
+            $coordonnee = chr(ord('A') + rand(1, 10) - 1) . '-' . rand(1, 10);
+            $missile = Missile::where('coordonnee', $coordonnee)->where('partie_id', $id)->first();
+
+            if ($missile === null) {
+                $recherche = false;
+            }
+        } while($recherche);
+
+        return $coordonnee;
+    }
+
+    private function targetCoordonnee($id, $coordonneeTarget) : ?string
+    {
+        $recherche = true;
+        $coordonneesAdjacentes = $this->coordonneesAdjacentes($coordonneeTarget);
+
+        do {
+             if (empty($coordonneesAdjacentes)) {
+                return null;
+             }
+            $randomIndex = array_rand($coordonneesAdjacentes);
+            $coordonnee = $coordonneesAdjacentes[$randomIndex];
+            array_splice($coordonneesAdjacentes, $randomIndex, 1);
+
+            $missile = Missile::where('coordonnee', $coordonnee)->where('partie_id', $id)->first();
+            if ($missile === null) {
+                $recherche = false;
+            }
+
+        } while($recherche);
+
+
+        return $coordonnee;
+    }
+
+    private function coordonneesAdjacentes($coordonneeTarget): array
+    {
+        $ligne = intval(substr($coordonneeTarget, 2));
+        $colonne = ord(substr($coordonneeTarget, 0, 1)) - ord('A') + 1;
+
+        $coordonneesAdjacentes = [];
+
+        if ($ligne > 1) {
+            $coordonneesAdjacentes[] = chr($colonne + 64) . '-' . ($ligne - 1);
+        }
+
+        if ($ligne < 10) {
+            $coordonneesAdjacentes[] = chr($colonne + 64) . '-' . ($ligne + 1);
+        }
+
+        if ($colonne > 1) {
+            $coordonneesAdjacentes[] = chr($colonne + 63) . '-' . $ligne;
+        }
+
+        if ($colonne < 10) {
+            $coordonneesAdjacentes[] = chr($colonne + 65) . '-' . $ligne;
+        }
+
+        return $coordonneesAdjacentes;
+    }
+
     /**
      * Store a newly created resource in storage.
      */
-    public function store($id): JsonResponse //MissileResource
+    public function store($id): JsonResponse
     {
-        //$missiles = Missile::where('partie_id', $id)->get();
+        $missiles = Missile::where('partie_id', $id)
+            ->where('resultat', 1)
+            ->get();
 
-        $coordonnee = chr(ord('A') + rand(1, 10) - 1) . '-' . rand(1, 10);
+        $coordonnee = null;
+
+        if (!$missiles->isEmpty()) {
+            $coordonnee = $this->targetCoordonnee($id, $missiles->first()->coordonnee);
+        }
+
+        if (empty($coordonnees)) {
+            $coordonnee = $this->randomCoordonnee($id);
+        }
 
         $missile = Missile::create([
             'partie_id' => $id,
@@ -25,14 +103,18 @@ class MissileController extends Controller
         ]);
 
         return response()->json($missile, 201);
-        //return new MissileResource($missile);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Missile $missile): JsonResponse
+    public function update(Request $request,$id, $coordonnee): JsonResponse
     {
-        return response()->json(null);
+        $missile = Missile::where('partie_id', $id)
+            ->where('coordonnee', $coordonnee)
+            ->firstOrFail();
+
+        $missile->update(['resultat' => $request->input('resultat')]);
+        return response()->json($missile, 201);
     }
 }
