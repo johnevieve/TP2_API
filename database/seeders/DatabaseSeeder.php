@@ -15,7 +15,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(2)->create();
+        $users = User::factory(2)->create();
+
+        $users->each(function ($user) {
+            $user->createToken('battleship-game-api-token');
+        });
+
         Partie::factory(2)->create();
         Missile::factory(3)->create();
     }

@@ -102,7 +102,7 @@ class MissileController extends Controller
             'resultat' => null
         ]);
 
-        return response()->json($missile, 201);
+        return (new MissileResource($missile))->response()->setStatusCode(201);
     }
 
     /**
@@ -115,6 +115,7 @@ class MissileController extends Controller
             ->firstOrFail();
 
         $missile->update(['resultat' => $request->input('resultat')]);
-        return response()->json($missile, 201);
+
+        return (new MissileResource($missile))->response()->setStatusCode(200);
     }
 }

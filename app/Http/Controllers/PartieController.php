@@ -12,25 +12,23 @@ class PartieController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePartieRequest $request): JsonResponse //PartieResource
+    public function store(StorePartieRequest $request): JsonResponse
     {
         $partie = Partie::create($request->validated());
         $partie->bateaux = null;
 
-        return response()->json($partie, 201);
-        // return new PartieResource($partie);
+        return (new PartieResource($partie))->response()->setStatusCode(201);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id): JsonResponse //PartieResource
+    public function destroy($id): JsonResponse
     {
         $partie = Partie::find($id);
         $partie->bateaux = null;
         Partie::destroy($id);
 
-        return response()->json($partie);
-        //return new PartieResource($partie);
+        return (new PartieResource($partie))->response()->setStatusCode(200);
     }
 }
