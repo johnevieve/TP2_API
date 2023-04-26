@@ -7,11 +7,9 @@ use App\Models\Missile;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-use function PHPUnit\Framework\isEmpty;
-
 class MissileController extends Controller
 {
-    private function randomCoordonnee($id) : string
+    private function randomCoordonnee($id): string
     {
         $recherche = true;
 
@@ -22,20 +20,20 @@ class MissileController extends Controller
             if ($missile === null) {
                 $recherche = false;
             }
-        } while($recherche);
+        } while ($recherche);
 
         return $coordonnee;
     }
 
-    private function targetCoordonnee($id, $coordonneeTarget) : ?string
+    private function targetCoordonnee($id, $coordonneeTarget): ?string
     {
         $recherche = true;
         $coordonneesAdjacentes = $this->coordonneesAdjacentes($coordonneeTarget);
 
         do {
-             if (empty($coordonneesAdjacentes)) {
+            if (empty($coordonneesAdjacentes)) {
                 return null;
-             }
+            }
             $randomIndex = array_rand($coordonneesAdjacentes);
             $coordonnee = $coordonneesAdjacentes[$randomIndex];
             array_splice($coordonneesAdjacentes, $randomIndex, 1);
@@ -45,7 +43,7 @@ class MissileController extends Controller
                 $recherche = false;
             }
 
-        } while($recherche);
+        } while ($recherche);
 
 
         return $coordonnee;
@@ -108,7 +106,7 @@ class MissileController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request,$id, $coordonnee): JsonResponse
+    public function update(Request $request, $id, $coordonnee): JsonResponse
     {
         $missile = Missile::where('partie_id', $id)
             ->where('coordonnee', $coordonnee)
