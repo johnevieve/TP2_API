@@ -12,7 +12,7 @@ class MissileController extends Controller
     private function randomCoordonnee($id): string
     {
         $recherche = true;
-
+        $taillePossible = 2;
         do {
             $coordonnee = chr(ord('A') + rand(1, 10) - 1) . '-' . rand(1, 10);
             $missile = Missile::where('coordonnee', $coordonnee)->where('partie_id', $id)->first();

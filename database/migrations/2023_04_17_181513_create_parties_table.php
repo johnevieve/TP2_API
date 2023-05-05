@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('parties', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('nom_ia');
+            $table->string('adversaire');
             $table->timestamps();
         });
     }

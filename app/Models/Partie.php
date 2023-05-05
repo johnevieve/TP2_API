@@ -9,5 +9,5 @@ class Partie extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nom_ia'];
+    protected $fillable = ['adversaire', 'user_id'];
 }
