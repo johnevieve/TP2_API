@@ -17,7 +17,7 @@ class PartieController extends Controller
     {
         $bateaux = [
             'porte-avions' => [],
-            'cuirassé' => [],
+            'cuirasse' => [],
             'destroyer' => [],
             'sous-marin' => [],
             'patrouilleur' => []
@@ -25,7 +25,7 @@ class PartieController extends Controller
 
         $tailles = [
             'porte-avions' => 5,
-            'cuirassé' => 4,
+            'cuirasse' => 4,
             'destroyer' => 3,
             'sous-marin' => 3,
             'patrouilleur' => 2
@@ -33,18 +33,35 @@ class PartieController extends Controller
 
         $arrayCoordonnees = [];
 
-       foreach ($bateaux as $nom => &$coordonnees) {
-           $taille = $tailles[$nom];
+        foreach ($bateaux as $nom => &$coordonnees) {
+            $taille = $tailles[$nom];
 
-           do {
-               $coordonneeX = rand(1, 10);
-               $coordonneeY = chr(ord('A') + rand(1, 10) - 1);
-               $horizontal = rand(0, 1);
+            do {
+                $coordonneeX = rand(1, 10);
+                $coordonneeY = chr(ord('A') + rand(0, 9));
+                $horizontal = rand(0, 1);
 
+                $valid = true;
 
+                for ($i = 0; $i < $taille; $i++) {
+                    $x = $horizontal ? $coordonneeX + $i : $coordonneeX;
+                    $y = $horizontal ? $coordonneeY : chr(ord($coordonneeY) + $i);
 
-           }while($coordonnees === null);
-       }
+                    if (isset($arrayCoordonnees[$x][$y]) || $x > 10 || $y > 'J') {
+                        $valid = false;
+                        break;
+                    }
+                }
+
+            } while (!$valid);
+
+            for ($i = 0; $i < $taille; $i++) {
+                $x = $horizontal ? $coordonneeX + $i : $coordonneeX;
+                $y = $horizontal ? $coordonneeY : chr(ord($coordonneeY) + $i);
+                $arrayCoordonnees[$x][$y] = true;
+                $coordonnees[] = "$y-$x";
+            }
+        }
 
         return $bateaux;
     }
