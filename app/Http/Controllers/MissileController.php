@@ -11,69 +11,50 @@ class MissileController extends Controller
 {
     private function randomCoordonnee($id): string
     {
-        $recherche = true;
-        $taillePossible = 2;
         do {
             $coordonnee = chr(ord('A') + rand(1, 10) - 1) . '-' . rand(1, 10);
             $missile = Missile::where('coordonnee', $coordonnee)->where('partie_id', $id)->first();
-
-            if ($missile === null) {
-                $recherche = false;
-            }
-        } while ($recherche);
+        } while ($missile != null);
 
         return $coordonnee;
     }
 
     private function targetCoordonnee($id, $coordonneeTarget): ?string
     {
-        $recherche = true;
-        $coordonneesAdjacentes = $this->coordonneesAdjacentes($coordonneeTarget);
+        $directions = array('haut', 'bas', 'gauche', 'droite');
+        shuffle($directions);
 
-        do {
-            if (empty($coordonneesAdjacentes)) {
-                return null;
+       foreach ($directions as $direction) {
+           $coordonneeTargetArray = str_split($coordonneeTarget);
+            switch ($direction) {
+                case 'haut' :
+                    if ($coordonneeTargetArray[0] > 'A') {
+                        $coordonneeTargetArray[0] = chr(ord($coordonneeTargetArray[0]) - 1);
+                    }
+                    break;
+                case 'bas' :
+                    if ($coordonneeTargetArray[0] < 'J') {
+                        $coordonneeTargetArray[0] = chr(ord($coordonneeTargetArray[0]) + 1);
+                    }
+                    break;
+                case 'gauche' :
+                    if ($coordonneeTargetArray[2] > 1) {
+                        $coordonneeTargetArray[2] = $coordonneeTargetArray[2] - 1;
+                    }
+                    break;
+                default :
+                    if ($coordonneeTargetArray[2] < 10) {
+                        $coordonneeTargetArray[2] = $coordonneeTargetArray[2] + 1;
+                    }
+                    break;
             }
-            $randomIndex = array_rand($coordonneesAdjacentes);
-            $coordonnee = $coordonneesAdjacentes[$randomIndex];
-            array_splice($coordonneesAdjacentes, $randomIndex, 1);
-
-            $missile = Missile::where('coordonnee', $coordonnee)->where('partie_id', $id)->first();
-            if ($missile === null) {
-                $recherche = false;
+            if(Missile::where('coordonnee', implode($coordonneeTargetArray))->where('partie_id', $id)->first() === null) {
+                return implode($coordonneeTargetArray);
             }
-
-        } while ($recherche);
-
-
-        return $coordonnee;
+        }
+        return null;
     }
 
-    private function coordonneesAdjacentes($coordonneeTarget): array
-    {
-        $ligne = intval(substr($coordonneeTarget, 2));
-        $colonne = ord(substr($coordonneeTarget, 0, 1)) - ord('A') + 1;
-
-        $coordonneesAdjacentes = [];
-
-        if ($ligne > 1) {
-            $coordonneesAdjacentes[] = chr($colonne + 64) . '-' . ($ligne - 1);
-        }
-
-        if ($ligne < 10) {
-            $coordonneesAdjacentes[] = chr($colonne + 64) . '-' . ($ligne + 1);
-        }
-
-        if ($colonne > 1) {
-            $coordonneesAdjacentes[] = chr($colonne + 63) . '-' . $ligne;
-        }
-
-        if ($colonne < 10) {
-            $coordonneesAdjacentes[] = chr($colonne + 65) . '-' . $ligne;
-        }
-
-        return $coordonneesAdjacentes;
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -84,16 +65,22 @@ class MissileController extends Controller
             ->where('resultat', 1)
             ->get();
 
+
         $coordonnee = null;
 
-        if (!$missiles->isEmpty()) {
-            $coordonnee = $this->targetCoordonnee($id, $missiles->first()->coordonnee);
+        foreach ($missiles as $missile){
+            var_dump($missile['coordonnee']);
+            $coordonnee = $this->targetCoordonnee($id, $missile['coordonnee']);
+
+            if($coordonnee != null) {
+                break;
+            }
         }
 
-        if (empty($coordonnees)) {
+        if ($coordonnee === null) {
+            var_dump($coordonnee);
             $coordonnee = $this->randomCoordonnee($id);
         }
-
         $missile = Missile::create([
             'partie_id' => $id,
             'coordonnee' => $coordonnee,

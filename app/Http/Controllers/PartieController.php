@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 
 class PartieController extends Controller
 {
+
+
     private function placerBateaux()
     {
         $bateaux = [
@@ -20,16 +22,32 @@ class PartieController extends Controller
             'sous-marin' => [],
             'patrouilleur' => []
         ];
-        $tailles = [ 5, 4, 3, 3, 2];
 
-        foreach ($bateaux as $bateau) {
+        $tailles = [
+            'porte-avions' => 5,
+            'cuirassé' => 4,
+            'destroyer' => 3,
+            'sous-marin' => 3,
+            'patrouilleur' => 2
+        ];
 
-        }
+        $arrayCoordonnees = [];
+
+       foreach ($bateaux as $nom => &$coordonnees) {
+           $taille = $tailles[$nom];
+
+           do {
+               $coordonneeX = rand(1, 10);
+               $coordonneeY = chr(ord('A') + rand(1, 10) - 1);
+               $horizontal = rand(0, 1);
+
+
+
+           }while($coordonnees === null);
+       }
 
         return $bateaux;
     }
-
-
 
     /**
      * Store a newly created resource in storage.
