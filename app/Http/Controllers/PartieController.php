@@ -41,19 +41,19 @@ class PartieController extends Controller
                 $coordonneeY = chr(ord('A') + rand(0, 9));
                 $horizontal = rand(0, 1);
 
-                $valid = true;
+                $valide = true;
 
                 for ($i = 0; $i < $taille; $i++) {
                     $x = $horizontal ? $coordonneeX + $i : $coordonneeX;
                     $y = $horizontal ? $coordonneeY : chr(ord($coordonneeY) + $i);
 
                     if (isset($arrayCoordonnees[$x][$y]) || $x > 10 || $y > 'J') {
-                        $valid = false;
+                        $valide = false;
                         break;
                     }
                 }
 
-            } while (!$valid);
+            } while (!$valide);
 
             for ($i = 0; $i < $taille; $i++) {
                 $x = $horizontal ? $coordonneeX + $i : $coordonneeX;
