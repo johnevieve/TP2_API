@@ -3,10 +3,10 @@
 namespace App\Exceptions;
 
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -60,7 +60,7 @@ class Handler extends ExceptionHandler
             }
         });
 
-        $this->renderable(function (UnauthorizedHttpException $e, Request $request) {
+        $this->renderable(function (AuthenticationException $e, Request $request) {
             if ($request->expectsJson()) {
                 return response()->json([
                     'message' => 'Non authentifié.'
