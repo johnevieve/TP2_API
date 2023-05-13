@@ -69,7 +69,7 @@ class MissileController extends Controller
         $coordonnee = null;
 
         foreach ($missiles as $missile){
-            var_dump($missile['coordonnee']);
+            //var_dump($missile['coordonnee']);
             $coordonnee = $this->targetCoordonnee($id, $missile['coordonnee']);
 
             if($coordonnee != null) {
@@ -78,9 +78,10 @@ class MissileController extends Controller
         }
 
         if ($coordonnee === null) {
-            var_dump($coordonnee);
+            //var_dump($coordonnee);
             $coordonnee = $this->randomCoordonnee($id);
         }
+
         $missile = Missile::create([
             'partie_id' => $id,
             'coordonnee' => $coordonnee,
