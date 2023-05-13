@@ -87,7 +87,7 @@ class PartieController extends Controller
      */
     public function destroy($id): JsonResponse
     {
-        $partie = Partie::find($id);
+        $partie = Partie::findOrFail($id);
         $partie->bateaux = null;
         Partie::destroy($id);
 
