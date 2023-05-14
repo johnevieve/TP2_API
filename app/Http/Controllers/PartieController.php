@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePartieRequest;
 use App\Http\Resources\PartieResource;
 use App\Models\Partie;
-use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Classe du contrôlleur des parties.
+ */
 class PartieController extends Controller
 {
-
 
     private function placerBateaux()
     {
@@ -67,7 +68,10 @@ class PartieController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Stockez une ressource d'une partie nouvellement créée dans le stockage.
+     *
+     * @param StorePartieRequest $request Demande requie.
+     * @return JsonResponse Réponce en JSON.
      */
     public function store(StorePartieRequest $request): JsonResponse
     {
@@ -83,7 +87,10 @@ class PartieController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Supprimez la ressource d'une partie spécifiée du stockage.
+     *
+     * @param $id "Id" de la partie.
+     * @return JsonResponse Réponce en JSON.
      */
     public function destroy($id): JsonResponse
     {

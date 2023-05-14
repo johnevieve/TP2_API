@@ -7,6 +7,9 @@ use App\Models\Missile;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+/**
+ * Classe du contrôlleur des missiles.
+ */
 class MissileController extends Controller
 {
     private function randomCoordonnee($id): string
@@ -24,8 +27,8 @@ class MissileController extends Controller
         $directions = array('haut', 'bas', 'gauche', 'droite');
         shuffle($directions);
 
-       foreach ($directions as $direction) {
-           $coordonneeTargetArray = str_split($coordonneeTarget);
+        foreach ($directions as $direction) {
+            $coordonneeTargetArray = str_split($coordonneeTarget);
             switch ($direction) {
                 case 'haut' :
                     if ($coordonneeTargetArray[0] > 'A') {
@@ -48,16 +51,18 @@ class MissileController extends Controller
                     }
                     break;
             }
-            if(Missile::where('coordonnee', implode($coordonneeTargetArray))->where('partie_id', $id)->first() === null) {
+            if (Missile::where('coordonnee', implode($coordonneeTargetArray))->where('partie_id', $id)->first() === null) {
                 return implode($coordonneeTargetArray);
             }
         }
         return null;
     }
 
-
     /**
-     * Store a newly created resource in storage.
+     * Stockez une ressource de missile nouvellement créée dans le stockage.
+     *
+     * @param $id "Id" de la partie.
+     * @return JsonResponse Réponce en JSON
      */
     public function store($id): JsonResponse
     {
@@ -68,17 +73,15 @@ class MissileController extends Controller
 
         $coordonnee = null;
 
-        foreach ($missiles as $missile){
-            //var_dump($missile['coordonnee']);
+        foreach ($missiles as $missile) {
             $coordonnee = $this->targetCoordonnee($id, $missile['coordonnee']);
 
-            if($coordonnee != null) {
+            if ($coordonnee != null) {
                 break;
             }
         }
 
         if ($coordonnee === null) {
-            //var_dump($coordonnee);
             $coordonnee = $this->randomCoordonnee($id);
         }
 
@@ -92,7 +95,12 @@ class MissileController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Mettez à jour la ressource du missile spécifiée dans le stockage.
+     *
+     * @param Request $request Demande requie
+     * @param $id "Id" de la partie.
+     * @param $coordonnee "Coordonne" du missile.
+     * @return JsonResponse Réponce en JSON.
      */
     public function update(Request $request, $id, $coordonnee): JsonResponse
     {

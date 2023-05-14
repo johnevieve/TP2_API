@@ -40,7 +40,9 @@ class Handler extends ExceptionHandler
     ];
 
     /**
-     * Register the exception handling callbacks for the application.
+     * Enregistrez les rappels de gestion des exceptions pour l'application et l'API.
+     *
+     * @return void
      */
     public function register(): void
     {

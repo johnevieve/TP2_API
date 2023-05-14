@@ -4,24 +4,24 @@ namespace Database\Factories;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Hash;
 
 /**
+ * Classe pour la création d'un model d'une partie pour la base de donnée.
+ *
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
  */
 class PartieFactory extends Factory
 {
     /**
-     * Define the model's default state.
+     * Définissez l'état par défaut du modèle.
      *
-     * @return array<string, mixed>
+     * @return array<string, mixed> array du model.
      */
     public function definition(): array
     {
         return [
             'user_id' => User::first(),
-            'nom_ia' => fake()->name(),
+            'adversaire' => fake()->name(),
         ];
     }
 
@@ -30,7 +30,7 @@ class PartieFactory extends Factory
      */
     public function unverified(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'email_verified_at' => null,
         ]);
     }
