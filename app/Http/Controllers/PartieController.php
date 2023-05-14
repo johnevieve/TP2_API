@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePartieRequest;
 use App\Http\Resources\PartieResource;
 use App\Models\Partie;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,6 +15,11 @@ use Illuminate\Support\Facades\Auth;
 class PartieController extends Controller
 {
 
+    /**
+     * Fonction pour le placement des bateaux de l'IA.
+     *
+     * @return array[] Liste des bateaux
+     */
     private function placerBateaux()
     {
         $bateaux = [
@@ -93,7 +99,7 @@ class PartieController extends Controller
      *
      * @param $id "Id" de la partie.
      * @return JsonResponse Réponce en JSON.
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws AuthorizationException
      */
     public function destroy($id): JsonResponse
     {

@@ -3,12 +3,13 @@
 namespace Database\Factories;
 
 use App\Models\Partie;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * Classe pour la création d'un model d'un missile pour la base de donnée.
  *
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
+ * @extends Factory<User>
  */
 class MissileFactory extends Factory
 {

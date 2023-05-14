@@ -8,13 +8,18 @@ use App\Http\Resources\MissileResource;
 use App\Models\Missile;
 use App\Models\Partie;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 /**
  * Classe du contrôlleur des missiles.
  */
 class MissileController extends Controller
 {
+    /**
+     * Lancement de missile de l'IA quand aucun bateau n'est touché.
+     *
+     * @param $id "Id" de la partie.
+     * @return string Coordonnée du missile.
+     */
     private function randomCoordonnee($id): string
     {
         do {
@@ -25,6 +30,13 @@ class MissileController extends Controller
         return $coordonnee;
     }
 
+    /**
+     * Lancement de missile de l'IA quand un bateau a été touché.
+     *
+     * @param $id "Id" de la partie.
+     * @param $coordonneeTarget "Coordonnée" de la case.
+     * @return string|null Coordonée ou null
+     */
     private function targetCoordonnee($id, $coordonneeTarget): ?string
     {
         $directions = array('haut', 'bas', 'gauche', 'droite');

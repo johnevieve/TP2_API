@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
@@ -20,7 +21,7 @@ class UpdateMissileRequest extends FormRequest
     /**
      * Obtenez les règles de validation qui s'appliquent à la demande.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\Rule|array|string> array de validation
+     * @return array<string, Rule|array|string> array de validation
      */
     public function rules(): array
     {
