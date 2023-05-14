@@ -18,9 +18,9 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         //'App\Models\Missile' => 'App\Policies\MissilePolicy',
-        Missile::class => MissilePolicy::class,
         //'App\Models\Partie' => 'App\Policies\PartiePolicy',
-        Partie::class => PartiePolicy::class,
+        Missile::class => MissilePolicy::class,
+        Partie::class => PartiePolicy::class
     ];
 
     /**

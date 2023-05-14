@@ -69,7 +69,9 @@ class MissileController extends Controller
      */
     public function store($id): JsonResponse
     {
-        Partie::where('id', $id)->firstOrFail();
+        $partie = Partie::where('id', $id)->firstOrFail();
+
+        $this->authorize('create', [Missile::class, $partie]);
 
         $missiles = Missile::where('partie_id', $id)
             ->where('resultat', 1)
@@ -108,7 +110,9 @@ class MissileController extends Controller
      */
     public function update(UpdateMissileRequest $request, $id, $coordonnee): JsonResponse
     {
-        Partie::where('id', $id)->firstOrFail();
+        $partie = Partie::where('id', $id)->firstOrFail();
+
+        $this->authorize('create', [Missile::class, $partie]);
 
         $validated = $request->validated();
 

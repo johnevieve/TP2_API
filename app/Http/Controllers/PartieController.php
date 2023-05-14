@@ -77,6 +77,8 @@ class PartieController extends Controller
     {
         $validated = $request->validated();
 
+        $this->authorize('create', Partie::class);
+
         $partie = Partie::create([
             'user_id' => Auth::id(),
             'adversaire' => $validated['adversaire'],
@@ -95,6 +97,7 @@ class PartieController extends Controller
     public function destroy($id): JsonResponse
     {
         $partie = Partie::findOrFail($id);
+        $this->authorize('delete', $partie);
         Partie::destroy($id);
 
         return (new PartieResource($partie))->response()->setStatusCode(200);

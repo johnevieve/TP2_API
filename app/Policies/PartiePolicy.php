@@ -28,11 +28,9 @@ class PartiePolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): Response
+    public function create(User $user): bool
     {
-        /*return $user->getAuthIdentifier() === auth()->
-            ? Response::allow()
-            : Response::denyWithStatus(403);*/
+        return true;
     }
 
     /**
@@ -48,9 +46,9 @@ class PartiePolicy
      */
     public function delete(User $user, Partie $partie): Response
     {
-        return $user->id === Auth::id()
+        return $user->id === $partie->user_id
             ? Response::allow()
-            : Response::denyWithStatus(403);
+            : Response::deny('Cette action n’est pas autorisée.');
     }
 
     /**
