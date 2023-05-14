@@ -93,6 +93,7 @@ class PartieController extends Controller
      *
      * @param $id "Id" de la partie.
      * @return JsonResponse Réponce en JSON.
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function destroy($id): JsonResponse
     {
