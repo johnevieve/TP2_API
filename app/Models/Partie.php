@@ -12,8 +12,13 @@ class Partie extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'bateaux' => 'array'
+    ];
+
     protected $fillable = [
         'adversaire',
-        'user_id'
+        'user_id',
+        'bateaux'
     ];
 }

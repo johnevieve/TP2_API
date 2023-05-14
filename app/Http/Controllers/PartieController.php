@@ -78,10 +78,10 @@ class PartieController extends Controller
         $validated = $request->validated();
 
         $partie = Partie::create([
+            'user_id' => Auth::id(),
             'adversaire' => $validated['adversaire'],
-            'user_id' => Auth::id()
+            'bateaux' => $this->placerBateaux()
         ]);
-        $partie->bateaux = $this->placerBateaux();
 
         return (new PartieResource($partie))->response()->setStatusCode(201);
     }
@@ -95,7 +95,6 @@ class PartieController extends Controller
     public function destroy($id): JsonResponse
     {
         $partie = Partie::findOrFail($id);
-        $partie->bateaux = null;
         Partie::destroy($id);
 
         return (new PartieResource($partie))->response()->setStatusCode(200);

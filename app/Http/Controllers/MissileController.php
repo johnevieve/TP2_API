@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+//use App\Http\Requests\StoreMissileRequest;
+use App\Http\Requests\UpdateMissileRequest;
 use App\Http\Resources\MissileResource;
 use App\Models\Missile;
+use App\Models\Partie;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -66,10 +69,11 @@ class MissileController extends Controller
      */
     public function store($id): JsonResponse
     {
+        Partie::where('id', $id)->firstOrFail();
+
         $missiles = Missile::where('partie_id', $id)
             ->where('resultat', 1)
             ->get();
-
 
         $coordonnee = null;
 
@@ -97,18 +101,22 @@ class MissileController extends Controller
     /**
      * Mettez à jour la ressource du missile spécifiée dans le stockage.
      *
-     * @param Request $request Demande requie
+     * @param UpdateMissileRequest $request Demande requie
      * @param $id "Id" de la partie.
      * @param $coordonnee "Coordonne" du missile.
      * @return JsonResponse Réponce en JSON.
      */
-    public function update(Request $request, $id, $coordonnee): JsonResponse
+    public function update(UpdateMissileRequest $request, $id, $coordonnee): JsonResponse
     {
+        Partie::where('id', $id)->firstOrFail();
+
+        $validated = $request->validated();
+
         $missile = Missile::where('partie_id', $id)
             ->where('coordonnee', $coordonnee)
             ->firstOrFail();
 
-        $missile->update(['resultat' => $request->input('resultat')]);
+        $missile->update(['resultat' => $validated['resultat']]);
 
         return (new MissileResource($missile))->response()->setStatusCode(200);
     }
